@@ -27,8 +27,6 @@ namespace TestingMVC.Models
             return _employeeList.FirstOrDefault(e=> e.Id == id);
         }
 
-
-
         public IEnumerable<Employee> GetAllEmployees()
         {
             return _employeeList;

@@ -4,15 +4,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
 </head>
 <body>
-<div>
+
+<div class="container">
     @RenderBody()
 </div>
+
 @if (IsSectionDefined("Scripts"))
 {
-    @await RenderSectionAsync("Scripts", required:true)
+    @RenderSection("Scripts", required: false)
 }
+
 </body>
 </html>
