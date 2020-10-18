@@ -24,7 +24,7 @@ namespace TestingMVC.Models
         }
         public Employee GetEmployee(int id)
         {
-            return _employeeList.FirstOrDefault(x =>true);
+            return _employeeList.FirstOrDefault(e=> e.Id == id);
         }
 
 
