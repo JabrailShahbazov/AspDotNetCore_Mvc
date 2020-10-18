@@ -15,13 +15,13 @@ namespace TestingMVC.Controllers
         {
             _employee = employeeRepository;
         }
-        public ViewResult Index(int? id)
+        public ViewResult Details(int? id)
         {
             var emp = _employee.GetEmployee(id??1);
             return View(emp);
         }
 
-        public IActionResult Details()
+        public IActionResult Index()
         {
             var model = _employee.GetAllEmployees();
             return View(model);

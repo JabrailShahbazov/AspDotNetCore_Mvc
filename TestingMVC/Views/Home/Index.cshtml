@@ -1,35 +1,22 @@
-﻿@model Employee
+﻿@model IEnumerable<Employee>
 
 @{
-    ViewBag.Title = "Employee Details";
+    ViewBag.Title = "Employee List";
 }
 
-<div class="row justify-content-center m-3">
-    <div class="col-sm-8">
-        <div class="card">
+<div class="card-deck">
+    @foreach (var employee in Model)
+    {
+        <div class="card m-4">
             <div class="card-header">
-                <h1>@Model.Name</h1>
+                <h3>@employee.Name</h3>
             </div>
-
-            <div class="card-body text-center">
-                <img class="card-img-top" src="~/images/img1.jpg" />
-
-                <h4>Employee ID : @Model.Id</h4>
-                <h4>Email : @Model.Email</h4>
-                <h4>Department : @Model.Department</h4>
-
-            </div>
+            <img class="card-img-top" src="~/images/img1.jpg" />
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary">Back</a>
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary">View</a>
                 <a href="#" class="btn btn-primary">Edit</a>
                 <a href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
-    </div>
+    }
 </div>
-
-@section Scripts {
-    <script src="~/js/CustomScript.js"></script>
-}
-
-
