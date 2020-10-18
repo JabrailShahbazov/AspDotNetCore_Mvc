@@ -15,9 +15,9 @@ namespace TestingMVC.Controllers
         {
             _employee = employeeRepository;
         }
-        public ViewResult Index(int id)
+        public ViewResult Index(int? id)
         {
-            var emp = _employee.GetEmployee(1);
+            var emp = _employee.GetEmployee(id??1);
             return View(emp);
         }
 

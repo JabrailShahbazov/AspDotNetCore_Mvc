@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace TestingMVC.Models
 {
     public class MokeEmployeeRepository : IEmployeeRepository
     {
-        private List<Employee> _employeeList;
+        private readonly List<Employee> _employeeList;
 
         public MokeEmployeeRepository()
         {
@@ -23,8 +24,10 @@ namespace TestingMVC.Models
         }
         public Employee GetEmployee(int id)
         {
-            return _employeeList.FirstOrDefault(x => true);
+            return _employeeList.FirstOrDefault(x =>true);
         }
+
+
 
         public IEnumerable<Employee> GetAllEmployees()
         {
