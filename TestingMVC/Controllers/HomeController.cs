@@ -26,5 +26,10 @@ namespace TestingMVC.Controllers
             var model = _employee.GetAllEmployees();
             return View(model);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

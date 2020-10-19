@@ -14,11 +14,11 @@ namespace TestingMVC.Models
         {
             _employeeList= new List<Employee>()
             {
-                new Employee(){Id = 1, Name = "Jabrail", Department = "IT", Email = "Jabrail@mail.com"},
-                new Employee(){Id = 2, Name = "Nigar", Department = "HR", Email = "Nigar@mail.com"},
-                new Employee(){Id = 3, Name = "Narmin", Department = "B", Email = "Narmin@mail.com"},
-                new Employee(){Id = 4, Name = "Ibrahim", Department = "Ms", Email = "Ibrahim@mail.com"},
-                new Employee(){Id = 5, Name = "Resul", Department = "SOS", Email = "Resul@mail.com"}
+                new Employee(){Id = 1, Name = "Jabrail", Department = Dept.IT, Email = "Jabrail@mail.com"},
+                new Employee(){Id = 2, Name = "Nigar", Department = Dept.HR, Email = "Nigar@mail.com"},
+                new Employee(){Id = 3, Name = "Narmin", Department = Dept.None, Email = "Narmin@mail.com"},
+                new Employee(){Id = 4, Name = "Ibrahim", Department = Dept.None, Email = "Ibrahim@mail.com"},
+                new Employee(){Id = 5, Name = "Resul", Department = Dept.Payroll, Email = "Resul@mail.com"}
 
             };
         }
