@@ -26,9 +26,21 @@ namespace TestingMVC.Controllers
             var model = _employee.GetAllEmployees();
             return View(model);
         }
-
-        public IActionResult Create()
+        [HttpGet]
+        public ViewResult Create()
         {
+            return View();
+        }  
+
+        [HttpPost]
+        public IActionResult Create(Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                Employee newEmployee = _employee.Add(employee);
+                return RedirectToAction("Details", new { id = newEmployee.Id });
+            }
+
             return View();
         }
     }

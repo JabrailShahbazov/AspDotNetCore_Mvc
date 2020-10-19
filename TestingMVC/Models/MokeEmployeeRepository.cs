@@ -16,9 +16,7 @@ namespace TestingMVC.Models
             {
                 new Employee(){Id = 1, Name = "Jabrail", Department = Dept.IT, Email = "Jabrail@mail.com"},
                 new Employee(){Id = 2, Name = "Nigar", Department = Dept.HR, Email = "Nigar@mail.com"},
-                new Employee(){Id = 3, Name = "Narmin", Department = Dept.None, Email = "Narmin@mail.com"},
-                new Employee(){Id = 4, Name = "Ibrahim", Department = Dept.None, Email = "Ibrahim@mail.com"},
-                new Employee(){Id = 5, Name = "Resul", Department = Dept.Payroll, Email = "Resul@mail.com"}
+                new Employee(){Id = 3, Name = "Resul", Department = Dept.Payroll, Email = "Resul@mail.com"}
 
             };
         }
@@ -30,6 +28,13 @@ namespace TestingMVC.Models
         public IEnumerable<Employee> GetAllEmployees()
         {
             return _employeeList;
+        }
+
+        public Employee Add(Employee employee)
+        {
+            employee.Id = _employeeList.Max(e => e.Id) + 1;
+            _employeeList.Add(employee);
+            return employee;
         }
     }
 }
