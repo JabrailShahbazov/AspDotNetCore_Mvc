@@ -24,6 +24,7 @@ namespace TestingMVC
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+            //Elave etdiklerim
             services.AddDbContextPool<AppDbContext>(options => 
                 options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=TestingMvcDB;Trusted_Connection=True;"));
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
