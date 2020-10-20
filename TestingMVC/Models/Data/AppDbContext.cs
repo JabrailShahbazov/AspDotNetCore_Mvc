@@ -13,5 +13,15 @@ namespace TestingMVC.Models.Data
             
         }
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>().HasData(
+                new Employee
+                {
+                    //heleki ichini bosh qoymusham
+                });
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
