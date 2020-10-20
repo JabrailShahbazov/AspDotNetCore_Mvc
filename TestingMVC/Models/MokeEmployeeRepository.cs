@@ -36,5 +36,29 @@ namespace TestingMVC.Models
             _employeeList.Add(employee);
             return employee;
         }
+
+        public Employee Update(Employee employeeChangers)
+        {
+            Employee employee = _employeeList.FirstOrDefault(e => e.Id == e.Id);
+            if (employee != null)
+            {
+                employee.Name = employeeChangers.Name;
+                employee.Email = employeeChangers.Email;
+                employee.Department = employeeChangers.Department;
+            }
+
+            return employee;
+        }
+
+        public Employee Delete(int id)
+        {
+            Employee employee =_employeeList.FirstOrDefault(e => e.Id == e.Id);
+            if (employee!=null)
+            {
+                _employeeList.Remove(employee);
+            }
+
+            return employee;
+        }
     }
 }

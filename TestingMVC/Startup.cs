@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestingMVC.Models;
+using TestingMVC.Models.Data;
 
 namespace TestingMVC
 {
@@ -22,7 +24,9 @@ namespace TestingMVC
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddSingleton<IEmployeeRepository, MokeEmployeeRepository>();
+            services.AddDbContextPool<AppDbContext>(options => 
+                options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=TestingMvcDB;Trusted_Connection=True;"));
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
         }
 
        
