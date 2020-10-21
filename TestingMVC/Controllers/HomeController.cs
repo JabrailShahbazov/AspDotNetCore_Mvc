@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestingMVC.Models;
 using TestingMVC.ViewModels;
@@ -15,12 +16,13 @@ namespace TestingMVC.Controllers
         private readonly IEmployeeRepository _employee;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-
+        //Created IWebHostEnvironment For wwwroot mapping
         public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostEnvironment)
         {
             _employee = employeeRepository;
             _hostEnvironment = hostEnvironment;
         }
+
         public ViewResult Details(int? id)
         {
             var emp = _employee.GetEmployee(id??1);
@@ -32,8 +34,8 @@ namespace TestingMVC.Controllers
             var model = _employee.GetAllEmployees();
             return View(model);
         }
-        [HttpGet]
-        public ViewResult Create()
+
+        public IActionResult Create()
         {
             return View();
         }  
@@ -44,12 +46,15 @@ namespace TestingMVC.Controllers
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
-                if (model.Photo!=null)
+                if (model.Photos!=null && model.Photos.Count>0)
                 {
-                   string uploadFolder= Path.Combine(_hostEnvironment.WebRootPath, "images");
-                   uniqueFileName= Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-                  string filePath= Path.Combine(uploadFolder, uniqueFileName);
-                  model.Photo.CopyTo(new FileStream(filePath,FileMode.Create));
+                    foreach (IFormFile photo in model.Photos)
+                    {
+                        string uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "images");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                        string filePath = Path.Combine(uploadFolder, uniqueFileName);
+                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
                 }
                 Employee newEmployee = new Employee
                 {

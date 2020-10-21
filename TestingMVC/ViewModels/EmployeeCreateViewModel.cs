@@ -20,7 +20,7 @@ namespace TestingMVC.ViewModels
         public string Email { get; set; }
         [Required]
         public Dept? Department { get; set; }
-        public IFormFile Photo { get; set; }
+        public List<IFormFile> Photos { get; set; }
 
     }
 }

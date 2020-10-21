@@ -25,5 +25,7 @@ namespace TestingMVC.Models
         public Dept? Department { get; set; }
         public string PhotoPat { get; set; }
 
+        public DateTime DateTime { get; set; } = DateTime.Now;
+
     }
 }

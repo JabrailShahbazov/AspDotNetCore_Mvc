@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TestingMVC.Migrations
 {
@@ -15,7 +16,8 @@ namespace TestingMVC.Migrations
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Department = table.Column<int>(nullable: false),
-                    PhotoPat = table.Column<string>(nullable: true)
+                    PhotoPat = table.Column<string>(nullable: true),
+                    DateTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
