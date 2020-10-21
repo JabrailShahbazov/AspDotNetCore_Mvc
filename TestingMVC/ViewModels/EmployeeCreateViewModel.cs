@@ -4,17 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using TestingMVC.Models;
 
-namespace TestingMVC.Models
+namespace TestingMVC.ViewModels
 {
-    public class Employee
+    public class EmployeeCreateViewModel
     {
-       
-
-        public int Id { get; set; }
         [Required]
-        [MaxLength(50 ,ErrorMessage = "Name cannot exceed 5 characters")]
+        [MaxLength(50, ErrorMessage = "Name cannot exceed 5 characters")]
         public string Name { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
@@ -23,7 +20,7 @@ namespace TestingMVC.Models
         public string Email { get; set; }
         [Required]
         public Dept? Department { get; set; }
-        public string PhotoPat { get; set; }
+        public IFormFile Photo { get; set; }
 
     }
 }

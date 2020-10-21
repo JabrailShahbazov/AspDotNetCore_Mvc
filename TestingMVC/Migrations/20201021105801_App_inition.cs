@@ -2,7 +2,7 @@
 
 namespace TestingMVC.Migrations
 {
-    public partial class inition : Migration
+    public partial class App_inition : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace TestingMVC.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    Department = table.Column<int>(nullable: false)
+                    Department = table.Column<int>(nullable: false),
+                    PhotoPat = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

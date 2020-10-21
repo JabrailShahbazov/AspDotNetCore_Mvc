@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using TestingMVC.Models;
+using TestingMVC.ViewModels;
 
 namespace TestingMVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employee;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public HomeController(IEmployeeRepository employeeRepository)
+
+        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostEnvironment)
         {
             _employee = employeeRepository;
+            _hostEnvironment = hostEnvironment;
         }
         public ViewResult Details(int? id)
         {
@@ -33,11 +39,26 @@ namespace TestingMVC.Controllers
         }  
 
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Employee newEmployee = _employee.Add(employee);
+                string uniqueFileName = null;
+                if (model.Photo!=null)
+                {
+                   string uploadFolder= Path.Combine(_hostEnvironment.WebRootPath, "images");
+                   uniqueFileName= Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                  string filePath= Path.Combine(uploadFolder, uniqueFileName);
+                  model.Photo.CopyTo(new FileStream(filePath,FileMode.Create));
+                }
+                Employee newEmployee = new Employee
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Department = model.Department,
+                    PhotoPat = uniqueFileName
+                };
+                _employee.Add(newEmployee);
                 return RedirectToAction("Details", new { id = newEmployee.Id });
             }
 

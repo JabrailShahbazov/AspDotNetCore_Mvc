@@ -9,8 +9,8 @@ using TestingMVC.Models.Data;
 namespace TestingMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201020114547_inition")]
-    partial class inition
+    [Migration("20201021105801_App_inition")]
+    partial class App_inition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,9 @@ namespace TestingMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<string>("PhotoPat")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
