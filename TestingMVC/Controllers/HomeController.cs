@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using TestingMVC.Models;
 using TestingMVC.ViewModels;
 
 namespace TestingMVC.Controllers
-{
+{   [Authorize]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employee;
@@ -23,7 +24,7 @@ namespace TestingMVC.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-
+        [AllowAnonymous]
         //GET: Employee Details
         public ViewResult Details(int? id)
         {
@@ -36,6 +37,7 @@ namespace TestingMVC.Controllers
             return View(employee);
         }
 
+        [AllowAnonymous]
         //GET: All Employees
         public IActionResult Index()
         {
