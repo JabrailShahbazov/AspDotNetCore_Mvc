@@ -23,18 +23,28 @@ namespace TestingMVC.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
+
+        //GET: Employee Details
         public ViewResult Details(int? id)
         {
-            var emp = _employee.GetEmployee(id ?? 1);
-            return View(emp);
+            Employee employee = _employee.GetEmployee(id.Value);
+            if (employee == null)
+            {
+                Response.StatusCode = 404;
+                return View("EmployeeNotFound",id.Value);
+            }
+            return View(employee);
         }
 
+        //GET: All Employees
         public IActionResult Index()
         {
             var model = _employee.GetAllEmployees();
             return View(model);
         }
 
+        //If Click Edit Button 
+        //GET: /Edit/Id
         public IActionResult Edit(int id)
         {
             Employee employee = _employee.GetEmployee(id);
@@ -49,6 +59,9 @@ namespace TestingMVC.Controllers
             return View(employeeEditViewModel);
         }
 
+
+        //If you Edited Employee
+        //POST:
         [HttpPost]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
@@ -66,7 +79,7 @@ namespace TestingMVC.Controllers
                             , model.ExistingPhotoPath);
                         System.IO.File.Delete(filePath);
                     }
-                    employee.PhotoPat = ProcessUploadeFile(model);
+                    employee.PhotoPat = ProcessUploadFile(model);
 
                 }
 
@@ -77,6 +90,7 @@ namespace TestingMVC.Controllers
             return View();
         }
 
+        //GET: /Create
         public IActionResult Create()
         {
             return View();
@@ -88,7 +102,7 @@ namespace TestingMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = ProcessUploadeFile(model);
+                string uniqueFileName = ProcessUploadFile(model);
                 Employee newEmployee = new Employee
                 {
                     Name = model.Name,
@@ -103,8 +117,8 @@ namespace TestingMVC.Controllers
             return View();
         }
 
-
-        private string ProcessUploadeFile(EmployeeCreateViewModel model)
+        //Work on photo
+        private string ProcessUploadFile(EmployeeCreateViewModel model)
         {
             string uniqueFileName = null;
             if (model.Photos != null && model.Photos.Count > 0)
@@ -117,12 +131,11 @@ namespace TestingMVC.Controllers
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         photo.CopyTo(fileStream);
-
                     }
                 }
             }
-
             return uniqueFileName;
         }
+   
     }
 }
