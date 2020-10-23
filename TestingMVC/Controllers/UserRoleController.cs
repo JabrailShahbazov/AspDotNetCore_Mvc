@@ -36,7 +36,7 @@ namespace TestingMVC.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ListRoles", "UserRole");
                 }
 
                 foreach (IdentityError error in result.Errors)
@@ -46,6 +46,12 @@ namespace TestingMVC.Controllers
             }
 
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult ListRoles()
+        {
+            var roles = _roleManager.Roles;
+            return View(roles);
         }
     }
 }
