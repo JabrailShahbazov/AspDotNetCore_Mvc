@@ -12,4 +12,5 @@ namespace TestingMVC.ViewModels
         [Required]
         public string RoleName { get; set; }
     }
+
 }

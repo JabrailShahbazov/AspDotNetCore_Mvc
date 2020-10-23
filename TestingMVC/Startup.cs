@@ -24,8 +24,8 @@ namespace TestingMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages()
-                .AddDataAnnotationsLocalization();
+            services.AddRazorPages();
+                //.AddDataAnnotationsLocalization();
             //Elave etdiklerim
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;"));
