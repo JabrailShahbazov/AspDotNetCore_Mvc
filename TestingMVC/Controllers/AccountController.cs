@@ -36,6 +36,7 @@ namespace TestingMVC.Controllers
         {
             return View();
         }
+        //POSt: /<controller>/Register
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -49,11 +50,12 @@ namespace TestingMVC.Controllers
                     Email = model.Email,
                     City = model.City
                 };
+                //Password
                 var result = await _userManager.CreateAsync(user, model.Password);
                 //Register Succeeded
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, isPersistent: true);
 
                     //Note: First Parameter Action and second parameter Controller
                     return RedirectToAction("Index", "Home");
