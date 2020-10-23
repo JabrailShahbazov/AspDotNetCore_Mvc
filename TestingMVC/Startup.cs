@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,12 +26,25 @@ namespace TestingMVC
             services.AddControllersWithViews();
             services.AddRazorPages();
             //Elave etdiklerim
-            services.AddDbContextPool<AppDbContext>(options => 
+            services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;"));
+            //Depentesy enjection
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+            //IdentityDbContext Configure 
+            services.AddIdentity<IdentityUser, IdentityRole>(
+                    options =>
+                    {
+                        //Configure Password with my parameters
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 3;
+                        options.Password.RequireNonAlphanumeric = false;
+                    })
+                .AddEntityFrameworkStores<AppDbContext>();
+
+
         }
 
-       
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

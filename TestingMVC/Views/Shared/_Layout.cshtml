@@ -1,4 +1,4 @@
-﻿@using System.ComponentModel.DataAnnotations
+﻿@inject SignInManager<IdentityUser> SignInManager;
 <!DOCTYPE html>
 
 <html>
@@ -24,10 +24,34 @@
                     <li class="nav-item">
                         <a asp-action="Create" asp-controller="Home" class="nav-link">Create</a>
                     </li>
+
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @*if User Sign profile*@
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-action="Logout" asp-controller="Account">
+                                <button type="submit" class="nav-link btn btn-link py-0" style="width: auto">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-action="Register" asp-controller="Account" class="nav-link">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Login" asp-controller="Account" class="nav-link">LogIn</a>
+                        </li>
+                    }
+
                 </ul>
             </div>
         </nav>
-        <div >
+        <div>
             @RenderBody()
         </div>
     </div>
