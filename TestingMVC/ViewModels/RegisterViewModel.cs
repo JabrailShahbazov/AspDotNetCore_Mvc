@@ -11,7 +11,7 @@ namespace TestingMVC.ViewModels
     {
         [Required]
         [EmailAddress]
-        [Remote(action:"IsEmailInUse",controller:"Account")]
+        [Remote(action: "IsEmailInUse", controller: "Account")]
         public string Email { get; set; }
 
         [Required]
@@ -23,5 +23,6 @@ namespace TestingMVC.ViewModels
         [Compare("Password",
             ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public string City { get; set; }
     }
 }

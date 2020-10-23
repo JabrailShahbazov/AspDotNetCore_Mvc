@@ -24,14 +24,15 @@ namespace TestingMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddDataAnnotationsLocalization();
             //Elave etdiklerim
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;"));
             //Depentesy enjection
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
             //IdentityDbContext Configure 
-            services.AddIdentity<IdentityUser, IdentityRole>(
+            services.AddIdentity<ApplicationUser, IdentityRole>(
                     options =>
                     {
                         //Configure Password with my parameters
@@ -40,6 +41,10 @@ namespace TestingMVC
                         options.Password.RequireNonAlphanumeric = false;
                     })
                 .AddEntityFrameworkStores<AppDbContext>();
+
+
+            services.AddSession();
+            services.AddDistributedMemoryCache();
 
 
         }
@@ -51,6 +56,7 @@ namespace TestingMVC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TestingMVC.Migrations
 {
-    public partial class App_inition : Migration
+    public partial class AppMvc_inition : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,7 +39,8 @@ namespace TestingMVC.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -172,7 +173,7 @@ namespace TestingMVC.Migrations
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "DateTime", "Department", "Email", "Name", "PhotoPat" },
-                values: new object[] { 1, new DateTime(2020, 10, 23, 9, 21, 34, 198, DateTimeKind.Local).AddTicks(434), 2, "Jabrail@mail.com", "Jabrail", null });
+                values: new object[] { 1, new DateTime(2020, 10, 23, 17, 35, 48, 612, DateTimeKind.Local).AddTicks(2398), 2, "Jabrail@mail.com", "Jabrail", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
