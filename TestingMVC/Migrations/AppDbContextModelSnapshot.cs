@@ -251,7 +251,7 @@ namespace TestingMVC.Migrations
                         new
                         {
                             Id = 1,
-                            DateTime = new DateTime(2020, 10, 23, 17, 35, 48, 612, DateTimeKind.Local).AddTicks(2398),
+                            DateTime = new DateTime(2020, 10, 24, 9, 56, 34, 948, DateTimeKind.Local).AddTicks(7468),
                             Department = 2,
                             Email = "Jabrail@mail.com",
                             Name = "Jabrail"

@@ -10,8 +10,8 @@ using TestingMVC.Models.Data;
 namespace TestingMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201023133549_AppMvc_inition")]
-    partial class AppMvc_inition
+    [Migration("20201024055636_App_inition")]
+    partial class App_inition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -253,7 +253,7 @@ namespace TestingMVC.Migrations
                         new
                         {
                             Id = 1,
-                            DateTime = new DateTime(2020, 10, 23, 17, 35, 48, 612, DateTimeKind.Local).AddTicks(2398),
+                            DateTime = new DateTime(2020, 10, 24, 9, 56, 34, 948, DateTimeKind.Local).AddTicks(7468),
                             Department = 2,
                             Email = "Jabrail@mail.com",
                             Name = "Jabrail"

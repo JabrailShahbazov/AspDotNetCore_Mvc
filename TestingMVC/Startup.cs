@@ -28,7 +28,7 @@ namespace TestingMVC
                 //.AddDataAnnotationsLocalization();
             //Elave etdiklerim
             services.AddDbContextPool<AppDbContext>(options =>
-                options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;"));
+                options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;MultipleActiveResultSets=True;"));
             //Depentesy enjection
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
             //IdentityDbContext Configure 
