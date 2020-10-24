@@ -118,5 +118,11 @@ namespace TestingMVC.Controllers
                 return Json($"{email} is already in use");
             }
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
