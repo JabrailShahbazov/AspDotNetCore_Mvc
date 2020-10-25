@@ -10,7 +10,7 @@ using TestingMVC.Models.Data;
 namespace TestingMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201024055636_App_inition")]
+    [Migration("20201025125359_App_inition")]
     partial class App_inition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,16 +248,6 @@ namespace TestingMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateTime = new DateTime(2020, 10, 24, 9, 56, 34, 948, DateTimeKind.Local).AddTicks(7468),
-                            Department = 2,
-                            Email = "Jabrail@mail.com",
-                            Name = "Jabrail"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -265,7 +255,7 @@ namespace TestingMVC.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -274,7 +264,7 @@ namespace TestingMVC.Migrations
                     b.HasOne("TestingMVC.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -283,7 +273,7 @@ namespace TestingMVC.Migrations
                     b.HasOne("TestingMVC.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -292,13 +282,13 @@ namespace TestingMVC.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TestingMVC.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -307,7 +297,7 @@ namespace TestingMVC.Migrations
                     b.HasOne("TestingMVC.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

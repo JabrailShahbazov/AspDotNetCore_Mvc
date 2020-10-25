@@ -17,17 +17,13 @@ namespace TestingMVC.Models.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>().HasData(
-        //Burda men Default olaraq elavelerimi ede bilerem
-                new Employee
-                {
-                    Id = 1,
-                    Name = "Jabrail",
-                    Department = Dept.IT,
-                    Email = "Jabrail@mail.com"
-                }
-                );
+          
             base.OnModelCreating(modelBuilder);
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e=>e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
     }
 }
