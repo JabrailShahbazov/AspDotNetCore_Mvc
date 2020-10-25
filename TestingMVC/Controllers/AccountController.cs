@@ -21,21 +21,11 @@ namespace TestingMVC.Controllers
             _signInManager = signInManager;
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-
-
         //GET: /<controller>/
         [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
+
+
         //POSt: /<controller>/Register
         [AllowAnonymous]
         [HttpPost]
@@ -55,6 +45,10 @@ namespace TestingMVC.Controllers
                 //Register Succeeded
                 if (result.Succeeded)
                 {
+                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers","Administration");
+                    }
                     await _signInManager.SignInAsync(user, isPersistent: true);
 
                     //Note: First Parameter Action and second parameter Controller
@@ -74,13 +68,12 @@ namespace TestingMVC.Controllers
 
         //GET: /<controller>/
         [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
+
+        //POST:
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string url)
         {
             if (ModelState.IsValid)
             {
@@ -89,9 +82,9 @@ namespace TestingMVC.Controllers
                 if (result.Succeeded)
                 {
                     //For Security
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    if (!string.IsNullOrEmpty(url) && Url.IsLocalUrl(url))
                     {
-                        return Redirect(returnUrl);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -102,6 +95,15 @@ namespace TestingMVC.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+
 
         //Remote Email Validation
         [AcceptVerbs("Get","Post")]
@@ -118,6 +120,7 @@ namespace TestingMVC.Controllers
                 return Json($"{email} is already in use");
             }
         }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()

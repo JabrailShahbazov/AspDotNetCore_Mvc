@@ -22,13 +22,12 @@ namespace TestingMVC.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-        [HttpGet]
-        public IActionResult CreateUserRole()
-        {
-            return View();
-        }
 
-        //POST: /<controller>/CreateUserRole
+    
+        [HttpGet]
+        public IActionResult CreateUserRole() => View();
+
+        //POST: /<controller>/CreateUserRole ASYNC
         [HttpPost]
         public async Task<IActionResult> CreateUserRole(RoleViewModel model)
         {
@@ -53,16 +52,27 @@ namespace TestingMVC.Controllers
 
             return View(model);
         }
-        //GET: /<controller>/ListRoles/
+
+        //GET: All Users
         [HttpGet]
-        public IActionResult ListRoles()
+        public IActionResult ListUsers()
         {
-            var roles = _roleManager.Roles;
-            return View(roles);
+            IQueryable<ApplicationUser> users=_userManager.Users;
+            return View(users);
         }
 
 
 
+        //GET: All Rules
+        [HttpGet]
+        public IActionResult ListRoles()
+        {
+            IQueryable<IdentityRole> roles = _roleManager.Roles;
+            return View(roles);
+        }
+
+
+        //GET: Edit Role Only admin
         [Authorize(Roles = "Admin")]
         // Role ID is passed from the URL to the action
         [HttpGet]
@@ -96,6 +106,7 @@ namespace TestingMVC.Controllers
             return View(model);
         }
 
+        //POST: Edit Role
         [HttpPost]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
@@ -127,7 +138,7 @@ namespace TestingMVC.Controllers
             }
         }
        
-
+        //GET: Edit Users In Roles
         [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string Id)
         {
@@ -168,6 +179,7 @@ namespace TestingMVC.Controllers
         }
 
 
+        //Post: Edit Users In Roles
 
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string Id)
@@ -204,7 +216,7 @@ namespace TestingMVC.Controllers
                     if (i < (model.Count - 1))
                         continue;
                     else
-                        return RedirectToAction("EditRole", new { Id = Id });
+                        return RedirectToAction("EditRole", new {Id = Id});
                 }
             }
 

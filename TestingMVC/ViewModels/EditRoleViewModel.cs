@@ -18,6 +18,6 @@ namespace TestingMVC.ViewModels
         [Required(ErrorMessage = "Role Name is required")]
         public string RoleName { get; set; }
 
-        public List<string> Users { get; set; }
+        public List<string> Users { get; }
     }
 }
