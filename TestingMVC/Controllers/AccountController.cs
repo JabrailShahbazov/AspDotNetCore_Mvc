@@ -121,11 +121,6 @@ namespace TestingMVC.Controllers
             }
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
+       
     }
 }

@@ -42,6 +42,24 @@ namespace TestingMVC
                     })
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddAuthorization(options =>
+            {
+                //Claims policy
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role"));           
+                //Claims policy
+                options.AddPolicy("EditRolePolicy",
+                    policy => policy.RequireClaim("Edit Role", "true"));
+                //Role policy
+                options.AddPolicy("SuperAdminPolicy",
+                    policy => policy.RequireRole("Admin"));
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                //Configure AccessDenied Path
+                options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
+            });
 
             services.AddSession();
             services.AddDistributedMemoryCache();

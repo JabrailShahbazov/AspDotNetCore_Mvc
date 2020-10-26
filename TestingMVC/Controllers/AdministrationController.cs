@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +13,7 @@ using TestingMVC.ViewModels;
 
 namespace TestingMVC.Controllers
 {
-    [Authorize(Roles = "Admin ,User")]
+    [Authorize(Policy = "SuperAdminPolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -44,7 +45,7 @@ namespace TestingMVC.Controllers
                 {
                     return RedirectToAction("ListRoles", "Administration");
                 }
-
+                //Error olarsa 
                 foreach (IdentityError error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
@@ -101,8 +102,7 @@ namespace TestingMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult>
-            ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -133,6 +133,74 @@ namespace TestingMVC.Controllers
             return RedirectToAction("EditUser", new { Id = userId });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user==null)
+            {
+                ViewBag.ErrorMessage = $"User with Id ={userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var existingUserClaims = await _userManager.GetClaimsAsync(user);
+            var model = new UserClaimsViewModel
+            {
+                UserId = userId
+            };
+            foreach (Claim claim in CalimsStore.AllClaims)
+            {
+                UserClaim userClaim= new UserClaim
+                {
+                    ClaimType = claim.Type
+                };
+                if (existingUserClaims.Any(c=>c.Type==claim.Type && c.Value=="true"))
+                {
+                    userClaim.IsSelected = true;
+                }
+                model.Cliams.Add(userClaim);
+            }
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.UserId} cannot be found";
+                return View("NotFound");
+            }
+
+            // Get all the user existing claims and delete them
+            var claims = await _userManager.GetClaimsAsync(user);
+            var result = await _userManager.RemoveClaimsAsync(user, claims);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user existing claims");
+                return View(model);
+            }
+
+            // Add all the claims that are selected on the UI
+            result = await _userManager.AddClaimsAsync(user,
+                model.Cliams
+                    .Where(c => c.IsSelected)
+                    .Select(c => new Claim(c.ClaimType, c.IsSelected? "true":"false")));
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot add selected claims to user");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new { Id = model.UserId });
+
+        }
 
 
         [HttpPost]
@@ -162,6 +230,7 @@ namespace TestingMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role =await _roleManager.FindByIdAsync(id);
@@ -196,10 +265,9 @@ namespace TestingMVC.Controllers
         }
 
 
-        //GET: Edit Role Only admin
-        [Authorize(Roles = "Admin")]
         // Role ID is passed from the URL to the action
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             // Find the role by Role ID
@@ -232,6 +300,7 @@ namespace TestingMVC.Controllers
 
         //POST: Edit Role
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);
@@ -370,7 +439,7 @@ namespace TestingMVC.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 City = user.City,
-                Claims = userClaims.Select(c => c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type+" : "+ c.Value).ToList(),
                 Roles = userRoles
             };
 
@@ -409,5 +478,12 @@ namespace TestingMVC.Controllers
             }
         }
 
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
