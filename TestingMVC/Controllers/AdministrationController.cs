@@ -13,7 +13,7 @@ using TestingMVC.ViewModels;
 
 namespace TestingMVC.Controllers
 {
-    [Authorize(Policy = "SuperAdminPolicy")]
+    //[Authorize(Policy = "SuperAdminPolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -64,6 +64,7 @@ namespace TestingMVC.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -102,6 +103,7 @@ namespace TestingMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -267,7 +269,6 @@ namespace TestingMVC.Controllers
 
         // Role ID is passed from the URL to the action
         [HttpGet]
-        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             // Find the role by Role ID
@@ -300,7 +301,7 @@ namespace TestingMVC.Controllers
 
         //POST: Edit Role
         [HttpPost]
-        [Authorize(Policy = "EditRolePolicy")]
+ 
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);

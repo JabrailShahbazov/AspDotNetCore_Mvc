@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestingMVC.Models;
 using TestingMVC.Models.Data;
+using TestingMVC.Security;
 
 namespace TestingMVC
 {
@@ -25,12 +28,11 @@ namespace TestingMVC
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
-                //.AddDataAnnotationsLocalization();
+            //.AddDataAnnotationsLocalization();
             //Elave etdiklerim
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;MultipleActiveResultSets=True;"));
-            //Depentesy enjection
-            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+    
             //IdentityDbContext Configure 
             services.AddIdentity<ApplicationUser, IdentityRole>(
                     options =>
@@ -46,14 +48,36 @@ namespace TestingMVC
             {
                 //Claims policy
                 options.AddPolicy("DeleteRolePolicy",
-                    policy => policy.RequireClaim("Delete Role"));           
+                    policy => policy.RequireClaim("Delete Role"));
                 //Claims policy
-                options.AddPolicy("EditRolePolicy",
-                    policy => policy.RequireClaim("Edit Role", "true"));
-                //Role policy
-                options.AddPolicy("SuperAdminPolicy",
-                    policy => policy.RequireRole("Admin"));
+                //options.AddPolicy("EditRolePolicy",
+                //    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+
+                //options.AddPolicy("SuperAdminPolicy",
+                //    policy => policy.RequireRole("Admin"));
+
+
+                options.AddPolicy("EditRolePolicy", policy =>
+                    policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+
+                options.InvokeHandlersAfterFailure = false;
             });
+
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("EditRolePolicy", policy => policy.RequireAssertion(context =>
+            //        context.User.IsInRole("Admin") &&
+            //        context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true") ||
+            //        context.User.IsInRole("Super Admin")
+            //    ));
+            //});
+
+
+            //Depentesy enjection
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+            services.AddSingleton<IAuthorizationHandler,CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
             services.ConfigureApplicationCookie(options =>
             {
