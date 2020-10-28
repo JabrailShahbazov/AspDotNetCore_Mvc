@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<ApplicationUser>
-
 @{
     ViewBag.Title = "All Users";
 }
@@ -12,7 +11,7 @@
        class="btn btn-primary mb-3" style="width:auto">
         Add new user
     </a>
-   
+
     foreach (var user in Model)
     {
         <div class="card mb-3">

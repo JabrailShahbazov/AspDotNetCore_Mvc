@@ -49,19 +49,19 @@ namespace TestingMVC
                 //Claims policy
                 options.AddPolicy("DeleteRolePolicy",
                     policy => policy.RequireClaim("Delete Role"));
-                //Claims policy
-                //options.AddPolicy("EditRolePolicy",
-                //    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
-
-                //options.AddPolicy("SuperAdminPolicy",
-                //    policy => policy.RequireRole("Admin"));
-
-
                 options.AddPolicy("EditRolePolicy", policy =>
                     policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
 
-                options.InvokeHandlersAfterFailure = false;
+                //options.InvokeHandlersAfterFailure = false;
             });
+
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "747185369603-obqhcnbuvg8g3dl8cq4eh5rqpj935t6u.apps.googleusercontent.com";
+                options.ClientSecret = "hbpgPNK1DKOyX6ywvbGBWtYu";
+            });
+              
+
 
 
             //services.AddAuthorization(options =>
@@ -87,6 +87,7 @@ namespace TestingMVC
 
             services.AddSession();
             services.AddDistributedMemoryCache();
+            services.AddApplicationInsightsTelemetry();
 
 
         }
