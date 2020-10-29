@@ -32,7 +32,7 @@ namespace TestingMVC
             //Elave etdiklerim
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(@"Server=DESKTOP-HKBHGD3;Database=AppMvcDB;Trusted_Connection=True;MultipleActiveResultSets=True;"));
-    
+
             //IdentityDbContext Configure 
             services.AddIdentity<ApplicationUser, IdentityRole>(
                     options =>
@@ -55,12 +55,18 @@ namespace TestingMVC
                 //options.InvokeHandlersAfterFailure = false;
             });
 
-            services.AddAuthentication().AddGoogle(options =>
+            services.AddAuthentication()
+                .AddGoogle(options =>
             {
                 options.ClientId = "747185369603-obqhcnbuvg8g3dl8cq4eh5rqpj935t6u.apps.googleusercontent.com";
                 options.ClientSecret = "hbpgPNK1DKOyX6ywvbGBWtYu";
-            });
-              
+            })
+                .AddFacebook(options => 
+                {
+                    options.ClientId = "363618808207033";
+                    options.ClientSecret = "8776644efc260422c28b51cac98114cf";
+                });
+
 
 
 
@@ -76,7 +82,7 @@ namespace TestingMVC
 
             //Depentesy enjection
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
-            services.AddSingleton<IAuthorizationHandler,CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
             services.ConfigureApplicationCookie(options =>
