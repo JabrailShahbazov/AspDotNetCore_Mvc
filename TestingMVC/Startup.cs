@@ -41,8 +41,10 @@ namespace TestingMVC
                         options.Password.RequiredLength = 8;
                         options.Password.RequiredUniqueChars = 3;
                         options.Password.RequireNonAlphanumeric = false;
+                        options.SignIn.RequireConfirmedAccount = true;
                     })
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
             {
